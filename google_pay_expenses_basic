@@ -1,0 +1,28 @@
+class ExpenseSharing:
+    def __init__(self, friends):
+        self.friends = friends
+        self.expenses = {friend: 0 for friend in friends}
+
+    def add_expense(self, payer, amount, participants):
+        split_amount = amount / len(participants)
+        for participant in participants:
+            if participant != payer:
+                self.expenses[participant] += split_amount
+                self.expenses[payer] -= split_amount
+
+    def calculate_settlement(self):
+        for friend, balance in self.expenses.items():
+            if balance > 0:
+                print(f"{friend} needs to be reimbursed: Rs.{balance:.2f}")
+            elif balance < 0:
+                print(f"{friend} owes: Rs.{-balance:.2f}")
+            else:
+                print(f"{friend} is settled up.")
+
+if __name__ == "__main__":
+    friends = ["Alice", "Bob", "Carol"]
+    expense_sharing = ExpenseSharing(friends)
+    expense_sharing.add_expense("Alice", 900, ["Alice","Bob","Carol"])
+    expense_sharing.add_expense("Bob", 300, ["Alice","Bob","Carol"])
+    print("\nFinal Settlement:")
+    expense_sharing.calculate_settlement()
