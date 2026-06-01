@@ -1,0 +1,29 @@
+class googlepaysplit:
+    def __init__(self,friends):
+       self.friends = friends
+       self.expense = {friend:0 for friend in friends}
+
+    def addexpense(self,payer,amount,participants):
+        split_amount = amount / len(participants)
+        for participant in participants:
+            if participant != payer:
+                self.expense[participant] += split_amount
+                self.expense[payer] -= split_amount
+    
+    def calculate_settlement(self):
+        for friend, balance in self.expense.items():
+            if balance > 0:
+                print(f"{friend} needs to be reimbursed: Rs.{balance:.2f}")
+            elif balance < 0:
+                print(f"{friend} owes: Rs.{-balance:.2f}")
+            else:
+                print(f"{friend} is settled up.")
+
+    if __name__ == "__main__":
+    friends = ["ananth","vijay","sridhar"]
+    split_money = googlepaysplit(friends)
+    split_money.addexpense("ananth",300,["ananth","vijay","sridhar"])
+    split_money.addexpense("vijay",900,["ananth","vijay","sridhar"])
+    split_money.addexpense("sridhar",600,["ananth","vijay","sridhar"])
+    print("\nFinal Settlement:")
+    split_money.calculate_settlement()
